@@ -1,9 +1,9 @@
 package ch.moldeor.firstTests;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,23 +14,23 @@ import ch.moledor.model.IndexNames;
 
 public class TestSearchQuery {
 
-	private final static String IDX_TEST_PATH = "D:/workspace_java/LuceneTutorial/indexingTests";
+	private final static String IDX_TEST_PATH = "D:/workspace_java/LucenePdfSuche/indexingTests";
 	@Test
 	public void testComplete() throws IOException, ParseException {
 		
 		DocumentDetail docDet = new DocumentDetail();
 		docDet.setDocName("Blablibla blubb oki doki wusch.pdf");
 		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
 		docDet.setFolderCount(3);
 		DocumentDetail docDet2 = new DocumentDetail();
 		docDet2.setDocName("empty.pdf");
 		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\empty.pdf");
+		docDet2.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\empty.pdf");
 		docDet2.setFolderCount(4);
 		DocumentDetail[] exp = new DocumentDetail[]{docDet, docDet2};
 		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", "+MARIUS", null, 400, null, null, null);
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", "MARIUS", null, 400, null, null);
 		DocumentDetail[] resArr = new DocumentDetail[res.size()];
 		
 		resArr = res.toArray(resArr);
@@ -44,89 +44,17 @@ public class TestSearchQuery {
 		DocumentDetail docDet = new DocumentDetail();
 		docDet.setDocName("westberlin.pdf");
 		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\westberlin.pdf");
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\westberlin.pdf");
 		docDet.setFolderCount(3);
 		DocumentDetail docDet2 = new DocumentDetail();
 		docDet2.setDocName("Silberleiste.pdf");
 		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\zzzz\\Silberleiste.pdf");
+		docDet2.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\zzzz\\Silberleiste.pdf");
 		docDet2.setFolderCount(4);
 
 		DocumentDetail[] exp = new DocumentDetail[]{docDet2, docDet};
 		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", null, null, 400, null, null, null);
-		DocumentDetail[] resArr = new DocumentDetail[res.size()];
-		
-		resArr = res.toArray(resArr);
-				
-		Assert.assertArrayEquals(exp, res.toArray());
-	}
-	
-	@Test
-	public void testAuthorIsNullOrderByAlph() throws IOException, ParseException {
-
-		DocumentDetail docDet = new DocumentDetail();
-		docDet.setDocName("westberlin.pdf");
-		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\westberlin.pdf");
-		docDet.setFolderCount(3);
-		DocumentDetail docDet2 = new DocumentDetail();
-		docDet2.setDocName("Silberleiste.pdf");
-		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\zzzz\\Silberleiste.pdf");
-		docDet2.setFolderCount(4);
-
-		DocumentDetail[] exp = new DocumentDetail[]{docDet2, docDet};
-		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", null, IndexNames.SORT_ALPHA, 400, null, null, null);
-		DocumentDetail[] resArr = new DocumentDetail[res.size()];
-		
-		resArr = res.toArray(resArr);
-				
-		Assert.assertArrayEquals(exp, res.toArray());
-	}
-	
-	@Test
-	public void testAuthorIsNullOrderByAlphDesc() throws IOException, ParseException {
-
-		DocumentDetail docDet = new DocumentDetail();
-		docDet.setDocName("westberlin.pdf");
-		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\westberlin.pdf");
-		docDet.setFolderCount(3);
-		DocumentDetail docDet2 = new DocumentDetail();
-		docDet2.setDocName("Silberleiste.pdf");
-		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\zzzz\\Silberleiste.pdf");
-		docDet2.setFolderCount(4);
-
-		DocumentDetail[] exp = new DocumentDetail[]{docDet, docDet2};
-
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", null, IndexNames.SORT_ALPHADESC, 400, null, null, null);
-		DocumentDetail[] resArr = new DocumentDetail[res.size()];
-		
-		resArr = res.toArray(resArr);
-				
-		Assert.assertArrayEquals(exp, res.toArray());
-	}
-	
-	@Test
-	public void testAuthorIsNullOrderByPath() throws IOException, ParseException {
-
-		DocumentDetail docDet = new DocumentDetail();
-		docDet.setDocName("westberlin.pdf");
-		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\westberlin.pdf");
-		docDet.setFolderCount(3);
-		DocumentDetail docDet2 = new DocumentDetail();
-		docDet2.setDocName("Silberleiste.pdf");
-		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\zzzz\\Silberleiste.pdf");
-		docDet2.setFolderCount(4);
-
-		DocumentDetail[] exp = new DocumentDetail[]{docDet, docDet2};
-		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", null, IndexNames.SORT_PATH, 400, null, null, null);
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "(Anlegegoniometer && blubb) Bikinis", null, null, 400, null, null);
 		DocumentDetail[] resArr = new DocumentDetail[res.size()];
 		
 		resArr = res.toArray(resArr);
@@ -140,16 +68,16 @@ public class TestSearchQuery {
 		DocumentDetail docDet = new DocumentDetail();
 		docDet.setDocName("Blablibla blubb oki doki wusch.pdf");
 		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
 		docDet.setFolderCount(3);
 		DocumentDetail docDet2 = new DocumentDetail();
 		docDet2.setDocName("empty.pdf");
 		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\empty.pdf");
+		docDet2.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\empty.pdf");
 		docDet2.setFolderCount(4);
 		DocumentDetail[] exp = new DocumentDetail[]{docDet, docDet2};
 		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, "+MARIUS", null, 400, null, null, null);
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, "MARIUS", null, 400, null, null);
 		DocumentDetail[] resArr = new DocumentDetail[res.size()];
 		
 		resArr = res.toArray(resArr);
@@ -163,16 +91,16 @@ public class TestSearchQuery {
 		DocumentDetail docDet = new DocumentDetail();
 		docDet.setDocName("Blablibla blubb oki doki wusch.pdf");
 		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
 		docDet.setFolderCount(3);
 		DocumentDetail docDet2 = new DocumentDetail();
 		docDet2.setDocName("empty.pdf");
 		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\empty.pdf");
+		docDet2.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\empty.pdf");
 		docDet2.setFolderCount(4);
 		DocumentDetail[] exp = new DocumentDetail[]{docDet, docDet2};
 		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "   ", "+MARIUS", null, 400, null, null, null);
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "   ", "MARIUS", null, 400, null, null);
 		DocumentDetail[] resArr = new DocumentDetail[res.size()];
 		
 		resArr = res.toArray(resArr);
@@ -185,17 +113,19 @@ public class TestSearchQuery {
 		DocumentDetail docDet = new DocumentDetail();
 		docDet.setDocName("Blablibla blubb oki doki wusch.pdf");
 		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
 		docDet.setFolderCount(3);
 		DocumentDetail docDet2 = new DocumentDetail();
 		docDet2.setDocName("Silberleiste.pdf");
 		docDet2.setSort(IndexNames.SORT_ALPHA);
-		docDet2.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\zzzz\\Silberleiste.pdf");
+		docDet2.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\zzzz\\Silberleiste.pdf");
 		docDet2.setFolderCount(4);
 
 		DocumentDetail[] exp = new DocumentDetail[]{docDet, docDet2};
 		
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, null, null, 400, new DateTime(2014, 6, 8, 0, 0), new DateTime(2014, 6, 8, 0, 0), null);
+		List<String> dateList = new ArrayList<String>();
+		dateList.add("2014-6-8");
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, null, null, 400, dateList, null);
 		DocumentDetail[] resArr = new DocumentDetail[res.size()];
 		
 		resArr = res.toArray(resArr);
@@ -206,7 +136,7 @@ public class TestSearchQuery {
 	@Test
 	public void testAllNull() throws IOException, ParseException {
 
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, null, null, 400, null, null, null);
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, null, null, 400, null, null);
 
 		Assert.assertEquals(res.size(), 0);
 	}
@@ -216,12 +146,12 @@ public class TestSearchQuery {
 		DocumentDetail docDet = new DocumentDetail();
 		docDet.setDocName("sizilisch.pdf");
 		docDet.setSort(null);
-		docDet.setPath("D:\\workspace_java\\LuceneTutorial\\testDataSet\\sizilisch.pdf");
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\sizilisch.pdf");
 		docDet.setFolderCount(3);
 
 		DocumentDetail[] exp = new DocumentDetail[]{docDet};
 
-		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, null, null, 400, null, null, "sklein");
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, null, null, null, 400, null, "sklein");
 		DocumentDetail[] resArr = new DocumentDetail[res.size()];
 		
 		resArr = res.toArray(resArr);
@@ -229,4 +159,23 @@ public class TestSearchQuery {
 		Assert.assertArrayEquals(exp, res.toArray());
 
 	}
+
+	@Test
+	public void testWildChar() throws IOException, ParseException {
+		
+		DocumentDetail docDet = new DocumentDetail();
+		docDet.setDocName("Blablibla blubb oki doki wusch.pdf");
+		docDet.setSort(null);
+		docDet.setPath("D:\\workspace_java\\LucenePdfSuche\\testDataSet\\Blablibla blubb oki doki wusch.pdf");
+		docDet.setFolderCount(3);
+		DocumentDetail[] exp = new DocumentDetail[]{docDet};
+		
+		List<DocumentDetail> res = SearchForQuery.searchFiles(IDX_TEST_PATH, "Bl?blibla", null, null, 400, null, null);
+		DocumentDetail[] resArr = new DocumentDetail[res.size()];
+		
+		resArr = res.toArray(resArr);
+				
+		Assert.assertArrayEquals(exp, res.toArray());
+	}
+	
 }

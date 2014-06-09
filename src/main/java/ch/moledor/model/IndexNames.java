@@ -6,19 +6,21 @@ import java.util.Map;
 
 public final class IndexNames {
 
-	public final static String IDXDIRPAHT = "D:/workspace_java/LuceneTutorial/indexing";
+	public final static String IDXDIRPAHT = "D:/workspace_java/LucenePdfSuche/indexing";
 	
 	
 	public final static String CONTENT = "contents";
-	public final static String AUTHOR = "author";
+	public final static String AUTHOR = "autor";
 	public final static String MODIFIED = "modified";
 	public final static String PATH = "path";
 	public final static String SIZE = "size";
+	public static final String MAXHITS = "maxHits";
 
 	public final static String SORT_ALPHA= "alphaSort";
 	public final static String SORT_PATH= "pathSort";
 	public static final String SORT_ALPHADESC = "alphaSortDesc";
-	public static final String MAXHITS = "maxHits";
+	public static final String SORT_SIZE = "sizeSort";
+	public static final String SORT_MODIFIED = "modifiedSort";
 	
 	
 	public static final Map<String, String> SIZE_RANGES = new HashMap<String, String>();

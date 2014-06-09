@@ -42,8 +42,8 @@ public class IndexingFolder {
 		try {
 //			File direct = new File("D:\\testFolderDataRetrieval\\pdfFolders");
 //			File idxDir = new File(IndexNames.IDXDIRPAHT);
-			File direct = new File("D:\\workspace_java\\LuceneTutorial\\testDataSet");
-			File idxDir = new File("D:\\workspace_java\\LuceneTutorial\\indexingTests");
+			File direct = new File("D:\\workspace_java\\LucenePdfSuche\\testDataSet");
+			File idxDir = new File("D:\\workspace_java\\LucenePdfSuche\\indexingTests");
 			
 			indexFolder(direct, idxDir);
 		} catch (IOException e) {

@@ -10,6 +10,7 @@ public class DocumentDetail implements Comparable<DocumentDetail> {
 	private int folderCount = 0;
 	private String sort;
 	private int size = 0;
+	private int modified = 0;
 
 	public DocumentDetail(String sort, Document d) {
 
@@ -20,7 +21,7 @@ public class DocumentDetail implements Comparable<DocumentDetail> {
 		folderCount = pSplit.length-1;
 		docName = pSplit[pSplit.length-1];
 		this.size = Integer.valueOf(d.get(IndexNames.SIZE));
-		System.out.println(d.get(IndexNames.SIZE));
+		this.modified = Integer.valueOf(d.get(IndexNames.MODIFIED));
 	}
 	
 
@@ -77,6 +78,16 @@ public class DocumentDetail implements Comparable<DocumentDetail> {
 	}
 
 
+	public int getModified() {
+		return modified;
+	}
+
+
+	public void setModified(int modified) {
+		this.modified = modified;
+	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		
@@ -99,15 +110,22 @@ public class DocumentDetail implements Comparable<DocumentDetail> {
 			return String.CASE_INSENSITIVE_ORDER.compare(comp.getDocName(), this.docName);
 		}
 		else if(IndexNames.SORT_PATH.equals(sort)) {
-			if(this.folderCount > comp.getFolderCount()) {
-				return 1;
-			}
-			else if(this.folderCount == comp.getFolderCount()) {
+			if(this.folderCount == comp.getFolderCount()) {
 				return 0;
 			}
-			else {
-				return -1;
+			return this.folderCount > comp.getFolderCount() ? 1 : -1;
+		}
+		else if(IndexNames.SORT_MODIFIED.equals(sort)) {
+			if(this.modified == comp.getModified()) {
+				return 0;
 			}
+			return this.modified > comp.getModified() ? 1 : -1; 
+		}
+		else if(IndexNames.SORT_SIZE.equals(sort)) {
+			if(this.size == comp.getSize()) {
+				return 0;
+			}
+			return this.size > comp.getSize() ? 1 : -1; 
 		}
 		return 0;
 	}

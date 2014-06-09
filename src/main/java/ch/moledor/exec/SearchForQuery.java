@@ -27,7 +27,7 @@ import ch.moledor.model.IndexNames;
 
 public class SearchForQuery {
 	
-    public static List<DocumentDetail> searchFiles(String indexPath, String queryStr, String authors, String sort, int maxHits, DateTime startDate, DateTime endDate, String size) throws IOException, ParseException {
+    public static List<DocumentDetail> searchFiles(String indexPath, String queryStr, String authors, String sort, int maxHits, List<String> dateStrings, String size) throws IOException, ParseException {
 
         List<DocumentDetail> found = new LinkedList<DocumentDetail>();
 
@@ -42,16 +42,69 @@ public class SearchForQuery {
         QueryParser parser = new QueryParser(Version.LUCENE_47, IndexNames.CONTENT, analyzer);
         
         if(StringUtils.isNotBlank(authors)) {
+        	System.out.println("blubb");
+    		String[] autorlist = authors.split(" ");
+        	StringBuilder sb = new StringBuilder();
+        	sb.append("+(");
+        	boolean firstAutorDone = false;
+        	for(String s : autorlist) {
+        		if(firstAutorDone) {
+        			sb.append(" OR ");
+        		}
+        		
+        		sb.append(s);
+        		firstAutorDone = true;
+        	}
+        	sb.append(")");
+    		
             QueryParser authorParser = new QueryParser(Version.LUCENE_47, IndexNames.AUTHOR,analyzer);
-            authorsQuery = authorParser.parse(authors);
+            authorsQuery = authorParser.parse(sb.toString());
+            System.out.println(authorsQuery);
         }
-        if(startDate != null) {
-            QueryParser modParser = new QueryParser(Version.LUCENE_47, IndexNames.MODIFIED,analyzer);
-            String fromStr = startDate.getYear()+String.format("%02d", startDate.getMonthOfYear())+String.format("%02d", startDate.getDayOfMonth());
-            String toStr = endDate.getYear()+String.format("%02d", endDate.getMonthOfYear())+String.format("%02d", endDate.getDayOfMonth());
-            String dateString = "+["+fromStr + " TO " + toStr+"]";
-            modifiedQuery = modParser.parse(dateString); 
+        if(dateStrings != null && dateStrings.size() > 0) {
+
+        	StringBuilder sb = new StringBuilder();
+        	sb.append("+(");
+        	for(String date : dateStrings) {
+    			boolean isExact = true;
+    			String compDate = null;
+    			if(date.startsWith(">")) {
+    				compDate = date.substring(1);
+    				isExact = false;
+    			}
+    			else {
+    				compDate = date;
+    			}
+
+    			String[] dat = compDate.split("-");
+    			String fromStr = dat[0]+String.format("%02d", Integer.valueOf(dat[1]))+String.format("%02d", Integer.valueOf(dat[2]));
+    			if(isExact) {
+    				sb.append(fromStr).append(" ");
+    			}
+    			else {
+    				DateTime dt = DateTime.now();
+    				String toStr = dt.getYear()+String.format("%02d", dt.getMonthOfYear())+String.format("%02d", dt.getDayOfMonth());
+    				sb.append("["+fromStr + " TO " + toStr+"] ");
+    			}
+        	}
+        	sb.append(")");
+        	
+        	QueryParser modParser = new QueryParser(Version.LUCENE_47, IndexNames.MODIFIED,analyzer);
+        	modifiedQuery = modParser.parse(sb.toString());
         }
+//        if(date != null) {
+//            QueryParser modParser = new QueryParser(Version.LUCENE_47, IndexNames.MODIFIED,analyzer);
+//            String fromStr = startDate.getYear()+String.format("%02d", startDate.getMonthOfYear())+String.format("%02d", startDate.getDayOfMonth());
+//            if(endDate != null) {
+//	            String toStr = endDate.getYear()+String.format("%02d", endDate.getMonthOfYear())+String.format("%02d", endDate.getDayOfMonth());
+//	            System.out.println(toStr);
+//	            String dateString = "+["+fromStr + " TO " + toStr+"]";
+//	            modifiedQuery = modParser.parse(dateString);
+//            }
+//            else {
+//            	modifiedQuery = modParser.parse("+"+fromStr);
+//            }
+//        }
         if(size != null) {
             QueryParser sizeParser = new QueryParser(Version.LUCENE_47, IndexNames.SIZE,analyzer);
         	sizeQuery = sizeParser.parse(IndexNames.SIZE_RANGES.get(size));
@@ -59,8 +112,10 @@ public class SearchForQuery {
 
         if(queryStr != null || authorsQuery != null || modifiedQuery != null || sizeQuery != null) {
         	query = parser.parse((queryStr != null ? queryStr : "")+" "+(authorsQuery != null ? authorsQuery : "")+" "+(modifiedQuery != null ? modifiedQuery : "")+ " "+ (sizeQuery != null ? sizeQuery : ""));
-System.out.println(query);
-            TopDocs topDocs = searcher.search(query, maxHits);
+        	
+        	System.out.println("Abgesetzte Query: "+query);
+            
+        	TopDocs topDocs = searcher.search(query, maxHits);
             ScoreDoc[] hits = topDocs.scoreDocs;
             for (int i = 0; i < hits.length; i++) {
                 int docId = hits[i].doc;
