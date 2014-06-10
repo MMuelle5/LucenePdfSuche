@@ -25,8 +25,28 @@ import org.joda.time.DateTime;
 import ch.moledor.model.DocumentDetail;
 import ch.moledor.model.IndexNames;
 
+/**
+ * 
+ * Queries fuer die jeweiligen Typen parsen und in eine Gesamt-Query zusammenfassen
+ * Sortierung der abgefuellten Resultate
+ * @author MARIUS
+ *
+ */
 public class SearchForQuery {
 	
+	/**
+	 * 
+	 * @param indexPath
+	 * @param queryStr
+	 * @param authors
+	 * @param sort
+	 * @param maxHits
+	 * @param dateStrings
+	 * @param size
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
     public static List<DocumentDetail> searchFiles(String indexPath, String queryStr, String authors, String sort, int maxHits, List<String> dateStrings, String size) throws IOException, ParseException {
 
         List<DocumentDetail> found = new LinkedList<DocumentDetail>();
@@ -92,19 +112,6 @@ public class SearchForQuery {
         	QueryParser modParser = new QueryParser(Version.LUCENE_47, IndexNames.MODIFIED,analyzer);
         	modifiedQuery = modParser.parse(sb.toString());
         }
-//        if(date != null) {
-//            QueryParser modParser = new QueryParser(Version.LUCENE_47, IndexNames.MODIFIED,analyzer);
-//            String fromStr = startDate.getYear()+String.format("%02d", startDate.getMonthOfYear())+String.format("%02d", startDate.getDayOfMonth());
-//            if(endDate != null) {
-//	            String toStr = endDate.getYear()+String.format("%02d", endDate.getMonthOfYear())+String.format("%02d", endDate.getDayOfMonth());
-//	            System.out.println(toStr);
-//	            String dateString = "+["+fromStr + " TO " + toStr+"]";
-//	            modifiedQuery = modParser.parse(dateString);
-//            }
-//            else {
-//            	modifiedQuery = modParser.parse("+"+fromStr);
-//            }
-//        }
         if(size != null) {
             QueryParser sizeParser = new QueryParser(Version.LUCENE_47, IndexNames.SIZE,analyzer);
         	sizeQuery = sizeParser.parse(IndexNames.SIZE_RANGES.get(size));

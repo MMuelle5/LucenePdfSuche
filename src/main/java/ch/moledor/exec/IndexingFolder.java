@@ -31,19 +31,25 @@ import org.joda.time.DateTime;
 
 import ch.moledor.model.IndexNames;
 
+/**
+ * 
+ * @author MARIUS
+ *
+ */
 public class IndexingFolder {
 
 	
 	/**
+	 * Starten der Indexierung
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
 		try {
-//			File direct = new File("D:\\testFolderDataRetrieval\\pdfFolders");
-//			File idxDir = new File(IndexNames.IDXDIRPAHT);
-			File direct = new File("D:\\workspace_java\\LucenePdfSuche\\testDataSet");
-			File idxDir = new File("D:\\workspace_java\\LucenePdfSuche\\indexingTests");
+			File direct = new File("D:\\testFolderDataRetrieval\\pdfFolders");
+			File idxDir = new File(IndexNames.IDXDIRPAHT);
+//			File direct = new File("D:\\workspace_java\\LucenePdfSuche\\testDataSet");
+//			File idxDir = new File("D:\\workspace_java\\LucenePdfSuche\\indexingTests");
 			
 			indexFolder(direct, idxDir);
 		} catch (IOException e) {
@@ -51,16 +57,17 @@ public class IndexingFolder {
 		}
 	}
 
+	/**
+	 * Erstellen des Index-Ordners und definieren der unterstuetzenden Klassen
+	 * @param direct
+	 * @param idxDir
+	 * @throws IOException
+	 */
 	public static void indexFolder(File direct, File idxDir) throws IOException {
 		DateTime dt = DateTime.now();
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, new StandardAnalyzer(Version.LUCENE_47));
 		
-//		if(true) {
-	        iwc.setOpenMode(OpenMode.CREATE);
-//	    } else {
-//	        // update index
-//	        iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-//	    }
+        iwc.setOpenMode(OpenMode.CREATE);
 	    iwc.setRAMBufferSizeMB(256.0);
 
 		Directory idxDirectory = FSDirectory.open(idxDir);
@@ -77,6 +84,16 @@ public class IndexingFolder {
 		
 	}
 
+	/**
+	 * Indexierung des Dokumentes
+	 * 	Wenn File = Folder: Rekursiver Aufruf der Methode mit allen Elementen im Ordner
+	 *  Wenn PDF : Auslesen des PDFs und dessen Inhaltes
+	 *  
+	 *  Abfuellen des Indexes mit den geforderten Attributen
+	 * @param writer
+	 * @param file
+	 * @throws IOException
+	 */
 	private static void indexDocs(IndexWriter writer, File file) throws IOException {
 		
         if (file.canRead()) {

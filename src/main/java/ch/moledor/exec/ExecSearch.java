@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.joda.time.DateTime;
 
 import ch.moledor.model.DocumentDetail;
 import ch.moledor.model.IndexNames;
@@ -15,6 +14,18 @@ import ch.moledor.model.IndexNames;
 public class ExecSearch {
 
 	/**
+	 * Programm start:
+	 *  1. Ausgabe der Such- und Sortiermöglichkeiten
+	 *  solange: Eingabe != exit:
+	 *     1. suchQuery eingeben
+	 *     2. filtern und zuweisen der verschiedenen Eigenschaften:
+	 *     		-EingabeAttribut = Autor
+	 *     		-EingabeAttribut = maxSize
+	 *     		-EingabeAttribut = Sortierung
+	 *     		-EingabeAttribut = Bearbeitungsdatum
+	 *     		-EingabeAttribut = Groesse
+	 *     3. QuerySearcher mit den betreffenden Attributen aufrufen
+	 *     4. Ausgabe des Resultats
 	 * @param args
 	 * @throws IOException 
 	 */
@@ -53,8 +64,6 @@ public class ExecSearch {
 			StringBuilder contents = new StringBuilder();
 			StringBuilder authors = new StringBuilder();
 			List<String> dateStrings = new ArrayList<String>();
-			DateTime startDate = null;
-			DateTime endDate = null;
 			String size = null;
 			int maxHits = 0;
 			String sort = null;
